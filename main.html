@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jogos Favoritos da Turma</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0f13;
+      --card: #18181f;
+      --border: #2a2a35;
+      --accent: #f0c040;
+      --accent2: #e05a5a;
+      --text: #e8e8f0;
+      --muted: #7a7a95;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      padding: 48px 24px;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle at 20% 20%, #1a1a2e 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, #1a0f1e 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .header-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 4px 12px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(52px, 10vw, 96px);
+      line-height: 0.9;
+      letter-spacing: 2px;
+    }
+
+    h1 span { color: var(--accent); }
+
+    .subtitle {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .counter {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+
+    .counter-item { text-align: center; }
+
+    .counter-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 42px;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .counter-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .game-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .game-card {
+      display: grid;
+      grid-template-columns: 48px 88px 1fr auto;
+      align-items: center;
+      gap: 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 16px 24px;
+      transition: border-color 0.2s, transform 0.2s;
+      animation: slideIn 0.4s ease both;
+    }
+
+    .game-card:hover {
+      border-color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .rank {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      color: var(--border);
+      text-align: center;
+      line-height: 1;
+    }
+
+    .rank.ouro   { color: var(--accent); }
+    .rank.prata  { color: #c0c0c0; }
+    .rank.bronze { color: #cd7f32; }
+
+    .cover-placeholder {
+      width: 88px;
+      height: 56px;
+      background: var(--border);
+      border: 1px solid #333;
+      overflow: hidden;
+    }
+
+    .cover-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .game-info { min-width: 0; }
+
+    .game-title {
+      font-weight: 600;
+      font-size: 16px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .game-genre {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .added-by {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .added-by-label {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .added-by-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--accent);
+      margin-top: 2px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 48px;
+      font-size: 12px;
+      color: var(--border);
+      letter-spacing: 1px;
+    }
+
+    footer span { color: var(--accent2); }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header>
+      <div class="header-tag">Aula de Git · Turma 2026</div>
+      <h1>JOGOS<br/><span>FAVORITOS</span></h1>
+      <p class="subtitle">Cada pessoa da turma adicionou o seu jogo favorito via Git 🎮</p>
+    </header>
+
+    <div class="counter">
+      <div class="counter-item">
+        <div class="counter-num" id="total-count">0</div>
+        <div class="counter-label">Jogos</div>
+      </div>
+      <div class="counter-item">
+        <div class="counter-num" id="people-count">0</div>
+        <div class="counter-label">Pessoas</div>
+      </div>
+    </div>
+
+    <div class="game-list" id="game-list"></div>
+
+    <footer>
+      Projeto colaborativo criado no Senac com <span>♥</span> e Git
+    </footer>
+
+  </div>
+
+  <script src="jogos.js"></script>
+
+  <script>
+    const list = document.getElementById('game-list');
+    const rankClasses = ['ouro', 'prata', 'bronze'];
+
+    jogos.forEach((jogo, i) => {
+      const num = String(i + 1).padStart(2, '0');
+      const rankClass = rankClasses[i] || '';
+
+      const card = document.createElement('div');
+      card.className = 'game-card';
+      card.style.animationDelay = `${i * 0.05}s`;
+      card.innerHTML = `
+        <div class="rank ${rankClass}">${num}</div>
+        <div class="cover-placeholder"><img src="${jogo.foto}" alt="${jogo.titulo}" onerror="this.style.display='none'"></div>
+        <div class="game-info">
+          <div class="game-title">${jogo.titulo}</div>
+          <div class="game-genre">${jogo.genero}</div>
+        </div>
+        <div class="added-by">
+          <div class="added-by-label">Adicionado por</div>
+          <div class="added-by-name">${jogo.pessoa}</div>
+        </div>
+      `;
+      list.appendChild(card);
+    });
+
+    document.getElementById('total-count').textContent = jogos.length;
+    document.getElementById('people-count').textContent = jogos.length;
+  </script>
+</body>
+</html>
